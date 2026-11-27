@@ -87,9 +87,7 @@ small.n,.hint{color:var(--mute);line-height:1.5;font-size:13px;margin:0}
   <h3>Gaya peta nyata</h3>
   <div class="g2">
    <button class="opt g" data-k="map" data-v="topo"><b>Peta Topo</b><span>Kontur, bukit &amp; hutan</span></button>
-   <button class="opt g" data-k="map" data-v="road"><b>Peta Jalan</b><span>Jalan &amp; gang super tajam</span></button>
    <button class="opt g" data-k="map" data-v="sat"><b>Satelit + Label</b><span>Citra udara asli</span></button>
-   <button class="opt g" data-k="map" data-v="dark"><b>Peta Malam</b><span>Gelap minimalis</span></button>
   </div>
   <h3>Pencahayaan &amp; suasana</h3>
   <div class="g4"><button class="opt" data-k="lt" data-v="auto">Auto</button><button class="opt" data-k="lt" data-v="pagi">Pagi</button><button class="opt" data-k="lt" data-v="sore">Sore</button><button class="opt" data-k="lt" data-v="malam">Malam</button></div>
@@ -159,12 +157,10 @@ const OW=1240,OH=1000,O=document.createElement('canvas'),Y0=250,SN=OH/2+330,SF=O
 O.width=OW;O.height=OH;const XO=O.getContext('2d');
 const ESRI='https://server.arcgisonline.com/ArcGIS/rest/services/',
 MAPS={topo:[ESRI+'World_Topo_Map/MapServer/tile/{z}/{y}/{x}'],
- road:['https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'],
- sat:[ESRI+'World_Imagery/MapServer/tile/{z}/{y}/{x}',ESRI+'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'],
- dark:['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png']},
-ATT={topo:'© Esri, USGS, NOAA',road:'© OpenStreetMap, © CARTO',sat:'© Esri, Maxar, Earthstar',dark:'© OpenStreetMap, © CARTO'},
+ sat:[ESRI+'World_Imagery/MapServer/tile/{z}/{y}/{x}',ESRI+'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}']},
+ATT={topo:'© Esri, USGS, NOAA',sat:'© Esri, Maxar, Earthstar'},
 LT={pagi:{sky:['#7fc2ff','#e3f3ff'],ov:'#fff8e61a'},sore:{sky:['#ff7e47','#ffd9a3'],ov:'#ff8c3a40'},malam:{sky:['#040813','#16294d'],ov:'#0a144673'}},
-BASE={topo:'#e8e4d8',road:'#eae7e0',sat:'#1d2a22',dark:'#0b1424'},TL={};
+BASE={topo:'#e8e4d8',sat:'#1d2a22'},TL={};
 const redraw=()=>{if(playing||rq)return;rq=requestAnimationFrame(()=>{rq=0;frame(lastP)})};
 function light(){
   let k=M.lt;
@@ -373,7 +369,7 @@ $('#demo').onclick=()=>{
   ['#fA','#fB'].forEach((s,i)=>{$(s).firstChild.textContent=(R[i].trk.dist/1000).toFixed(2)+' km ✓';$(s).classList.add('ok')});
   refresh();play()
 };
-const PRE={park:{map:'road',lt:'pagi',cam:'drone'},mount:{map:'topo',lt:'pagi',cam:'drone'},night:{map:'dark',lt:'malam',cam:'drone'}};
+const PRE={park:{map:'sat',lt:'pagi',cam:'drone'},mount:{map:'topo',lt:'pagi',cam:'drone'},night:{map:'topo',lt:'malam',cam:'drone'}};
 document.querySelectorAll('.opt[data-k]').forEach(b=>b.onclick=()=>{const k=b.dataset.k,v=b.dataset.v;if(k=='mode'){mode=v;$('#rB').hidden=v=='solo'}else M[k]=v;refresh()});
 document.querySelectorAll('[data-pre]').forEach(b=>b.onclick=()=>{Object.assign(M,PRE[b.dataset.pre]);refresh()});
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(o=>o.classList.toggle('on',o==b));document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.dataset.p==b.dataset.t))});
